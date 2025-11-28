@@ -133,21 +133,11 @@ func (d *Detector) ShouldProcess(modulePath string) bool {
 	return false
 }
 
-// NeedsPin determines if a version needs to be pinned
+// NeedsPin determines if a version needs to be pinned/updated
 func NeedsPin(version string) bool {
-	// @latest or no version specified → true
-	// @vX.Y.Z or other specific version → false
-	if version == "" || version == "latest" {
-		return true
-	}
-	return false
-}
-
-// NeedsUpdate determines if a version needs to be updated in update mode
-func NeedsUpdate(version string) bool {
-	// If a version is specified, it's an update target
-	// latest or unspecified are handled by NeedsPin
-	return version != "" && version != "latest"
+	// All versions should be updated to latest
+	// This includes @latest, @v1.0.0, @master, or no version
+	return true
 }
 
 // ExtractRootModule extracts the root module from a module path

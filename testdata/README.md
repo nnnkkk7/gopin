@@ -67,7 +67,7 @@ testdata/
 ### 7. Edge Cases
 - Different whitespace (spaces, tabs, multiple spaces)
 - Inline comments: `go install module@latest # comment`
-- Already pinned versions (should skip unless update mode)
+- Already pinned versions (will be updated to latest)
 - Mixed pinned and unpinned in same file
 - Variable usage in Makefile: `@$(VERSION)`
 - Conditional installs (if statements, Make conditionals)
@@ -94,9 +94,8 @@ The testdata files can be used for end-to-end testing:
 
 1. **Detection Test**: Verify all go install patterns are detected
 2. **Pinning Test**: Verify @latest is replaced with specific versions
-3. **Update Test**: Verify already pinned versions can be updated
-4. **Skip Test**: Verify already pinned versions are skipped in normal mode
-5. **Format Preservation**: Verify file formatting is preserved (indentation, comments, etc.)
+3. **Update Test**: Verify all versions are updated to latest
+4. **Format Preservation**: Verify file formatting is preserved (indentation, comments, etc.)
 
 ### Coverage Goals
 - ✅ Basic go install patterns
@@ -121,9 +120,6 @@ gopin check testdata/
 
 # List all go install commands
 gopin list testdata/
-
-# Update pinned versions
-gopin run --update testdata/
 ```
 
 ### Automated Testing

@@ -61,11 +61,6 @@ func runCommand() *cli.Command {
 				Aliases: []string{"d"},
 				Usage:   "show diff output",
 			},
-			&cli.BoolFlag{
-				Name:    "update",
-				Aliases: []string{"u"},
-				Usage:   "update existing pinned versions to latest",
-			},
 			&cli.StringSliceFlag{
 				Name:    "include",
 				Aliases: []string{"i"},
@@ -124,10 +119,9 @@ func runAction(ctx context.Context, c *cli.Command) error {
 
 	// Process files
 	var results []*rewriter.Result
-	updateMode := c.Bool("update")
 
 	for _, file := range files {
-		result, err := processFile(ctx, logger, file, det, res, rew, updateMode)
+		result, err := processFile(ctx, logger, file, det, res, rew)
 		if err != nil {
 			logger.Error("failed to process file", "file", file, "error", err)
 			continue
@@ -399,7 +393,6 @@ func processFile(
 	det *detector.Detector,
 	res resolver.Resolver,
 	rew *rewriter.Rewriter,
-	updateMode bool,
 ) (*rewriter.Result, error) {
 	content, err := os.ReadFile(file)
 	if err != nil {
@@ -420,14 +413,6 @@ func processFile(
 	for _, m := range matches {
 		// Skip if already resolved
 		if _, ok := versions[m.ModulePath]; ok {
-			continue
-		}
-
-		// Check if pinning is needed
-		needsPin := detector.NeedsPin(m.Version)
-		needsUpdate := updateMode && detector.NeedsUpdate(m.Version)
-
-		if !needsPin && !needsUpdate {
 			continue
 		}
 

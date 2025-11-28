@@ -125,11 +125,6 @@ cd /path/to/gopin
 ./gopin run testdata/*.sh testdata/Makefile testdata/.github/workflows/*.yml
 ```
 
-### Update already pinned versions to latest
-```bash
-./gopin run --update testdata/Makefile
-```
-
 ## Known False Positives
 
 Some patterns may be incorrectly detected as go install commands:

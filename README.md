@@ -45,13 +45,13 @@ gopin list
 
 ### `gopin run`
 
-Pin go install versions in files.
+Update all go install commands to latest versions.
 
 ```bash
-# Pin versions in default target files
+# Update all go install to latest
 gopin run
 
-# Pin versions in specific files
+# Update specific files
 gopin run Makefile .github/workflows/*.yml
 
 # Preview changes without applying
@@ -60,14 +60,19 @@ gopin run --dry-run
 # Show diff output
 gopin run --diff
 
-# Update existing pinned versions to latest
-gopin run --update
-
-# Include only specific modules
+# Update only specific modules
 gopin run --include "golangci-lint.*"
 
 # Exclude specific modules
 gopin run --exclude "internal/.*"
+```
+
+**Note:** To keep a specific version, add it to `ignore_modules` in `.gopin.yaml`:
+
+```yaml
+ignore_modules:
+  - name: "github.com/special/tool"
+    reason: "Must stay at v1.50.0"
 ```
 
 ### `gopin check`
