@@ -1,0 +1,53 @@
+name: Advanced Patterns
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  # Multiple go install commands in one step
+  multi-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+      - run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          go install golang.org/x/tools/cmd/goimports@latest
+          go install github.com/securego/gosec/v2/cmd/gosec@latest
+
+  # go install with flags
+  install-with-flags:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install -v github.com/goreleaser/goreleaser@latest
+      - run: go install -tags=extended github.com/gohugoio/hugo@latest
+
+  # go install with already pinned versions (should not change unless update mode)
+  already-pinned:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.61.0
+      - run: go install golang.org/x/tools/cmd/stringer@v0.27.0
+
+  # Mixed pinned and unpinned
+  mixed:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+      - run: go install golang.org/x/tools/cmd/stringer@v0.27.0
+      - run: go install github.com/cosmtrek/air@latest
+
+  # go install without version (defaults to latest)
+  no-version:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/spf13/cobra-cli@latest
+      - run: go install github.com/swaggo/swag/cmd/swag
+
+  # Inline comments (not pinned comments)
+  with-comments:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest # for linting
+      - run: go install golang.org/x/tools/cmd/goimports@latest # format imports

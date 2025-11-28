@@ -1,0 +1,39 @@
+# gopin configuration
+version: 1
+
+# Target file patterns
+files:
+  # GitHub Actions (all YAML files in .github, recursively)
+  - pattern: ".github/**/*.yml"
+  - pattern: ".github/**/*.yaml"
+
+  # Makefiles
+  - pattern: "Makefile"
+  - pattern: "Makefile.*"
+  - pattern: "*.mk"
+
+  # Shell scripts
+  - pattern: "scripts/*.sh"
+  - pattern: "*.sh"
+
+  # Dockerfiles
+  - pattern: "Dockerfile"
+  - pattern: "Dockerfile.*"
+
+  # Task runners
+  - pattern: "justfile"
+  - pattern: "Justfile"
+  - pattern: "taskfile.yml"
+  - pattern: "Taskfile.yml"
+  - pattern: "taskfile.yaml"
+  - pattern: "Taskfile.yaml"
+
+  # Text files (for testing edge cases)
+  - pattern: "*.txt"
+
+# Modules to ignore (optional)
+# ignore_modules:
+#   - name: "github.com/internal/.*"
+#     reason: "internal tools"
+#   - name: "github.com/private/.*"
+#     reason: "private repositories"

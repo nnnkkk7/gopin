@@ -1,0 +1,59 @@
+# Edge cases and special patterns for go install
+
+# 1. Different spacing
+go install    github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+go  install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+go	install	github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+
+# 2. Multiple flags
+go install -v -trimpath -ldflags="-s -w" github.com/goreleaser/goreleaser@latest
+go install -tags=extended github.com/gohugoio/hugo@latest
+go install -race github.com/cosmtrek/air@latest
+
+# 3. Module paths with numbers and special chars
+go install github.com/99designs/gqlgen@latest
+go install github.com/securego/gosec/v2/cmd/gosec@latest
+go install gopkg.in/yaml.v3@latest
+go install k8s.io/kubectl@latest
+
+# 4. Different version formats
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@master
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@main
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8-rc1
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v0.0.0-20230101120000-abcdef123456
+
+# 5. No version (implicitly latest)
+go install github.com/air-verse/air
+go install golang.org/x/tools/cmd/goimports
+
+# 6. With inline comments (not pinned comments)
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest # linter
+go install golang.org/x/tools/cmd/goimports@latest  # import formatter
+go install github.com/securego/gosec/v2/cmd/gosec@latest	# security
+
+# 7. Already pinned versions (should not change unless update mode)
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.61.0
+go install golang.org/x/tools/cmd/stringer@v0.27.0
+
+# 8. Subpackages
+go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/golang/protobuf/protoc-gen-go@latest
+
+# 9. Similar but different modules
+go install github.com/cosmtrek/air@latest
+go install github.com/air-verse/air@latest
+
+# 10. Case sensitivity
+go install github.com/GoLang/ExampleTool@latest
+go install github.com/Golang/Example-Tool@latest
+
+# 11. Long module paths
+go install github.com/organization/repository/cmd/tool/subcommand@latest
+
+# 12. Hyphens and underscores
+go install github.com/my-org/my-tool@latest
+go install github.com/my_org/my_tool@latest
+go install github.com/org-name/tool_name@latest

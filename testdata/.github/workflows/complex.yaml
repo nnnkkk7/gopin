@@ -1,0 +1,48 @@
+name: Complex Scenarios
+
+on: [push, pull_request]
+
+jobs:
+  # Matrix build with go install
+  matrix-test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+        go: ['1.22', '1.23']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Install tools
+        run: |
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          go install honnef.co/go/tools/cmd/staticcheck@latest
+
+  # Conditional install
+  conditional:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install on Linux
+        if: runner.os == 'Linux'
+        run: go install github.com/google/ko@latest
+
+  # Multi-line with &&
+  chained-commands:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest && golangci-lint --version
+      - run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest &&
+          govulncheck ./...
+
+  # Different version formats
+  version-formats:
+    runs-on: ubuntu-latest
+    steps:
+      - run: go install github.com/go-delve/delve/cmd/dlv@latest
+      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
+      - run: go install golang.org/x/tools/gopls@master
+      - run: go install github.com/cosmtrek/air@v1.52.3
