@@ -3,9 +3,12 @@ name: Release
 on:
   # Trigger when tagpr workflow completes successfully
   workflow_run:
-    workflows: ["tagpr"]
-    types: [completed]
-    branches: [main]
+    workflows:
+      - tagpr
+    types:
+      - completed
+    branches:
+      - main
 
   # Manual trigger for existing tags or re-runs
   workflow_dispatch:
@@ -87,6 +90,20 @@ jobs:
           ref: ${{ steps.get-tag.outputs.tag }}
           # Fetch complete history (required for CHANGELOG generation)
           fetch-depth: 0
+
+      - name: Ensure required files exist for old tags
+        if: steps.get-tag.outputs.skip != 'true'
+        run: |
+          # Create CLAUDE.md if it doesn't exist (for v1.0.0 compatibility)
+          if [ ! -f CLAUDE.md ]; then
+            echo "# CLAUDE.md" > CLAUDE.md
+            echo "" >> CLAUDE.md
+            echo "This file provides guidance to Claude Code when working with code in this repository." >> CLAUDE.md
+            echo "" >> CLAUDE.md
+            echo "Note: This is a placeholder file created during the release process." >> CLAUDE.md
+            echo "For the latest version, please see the main branch." >> CLAUDE.md
+            echo "Created placeholder CLAUDE.md for compatibility with old tags"
+          fi
 
       - name: Set up Go
         if: steps.get-tag.outputs.skip != 'true'
