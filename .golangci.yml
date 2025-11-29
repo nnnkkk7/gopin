@@ -4,6 +4,8 @@ formatters:
   enable:
     - gofmt         # Standard Go formatting
     - goimports     # Import formatting and organization
+    - gci           # Canonical import grouping and formatting
+    - gofumpt       # Stricter gofmt with additional style rules
 
   settings:
     goimports:
