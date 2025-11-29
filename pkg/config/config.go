@@ -12,12 +12,12 @@ import (
 
 // Config represents gopin configuration
 type Config struct {
-	Version        int            `yaml:"version"`
 	Files          []FilePattern  `yaml:"files"`
 	IgnoreModules  []IgnoreModule `yaml:"ignore_modules"`
+	IncludeModules []string       `yaml:"-"`
+	ExcludeModules []string       `yaml:"-"`
 	Resolver       ResolverConfig `yaml:"resolver"`
-	IncludeModules []string       `yaml:"-"` // Set only from CLI
-	ExcludeModules []string       `yaml:"-"` // Set only from CLI
+	Version        int            `yaml:"version"`
 }
 
 // FilePattern represents a file pattern configuration
@@ -88,7 +88,7 @@ func Load(path string) (*Config, error) {
 
 // loadFile loads configuration from specified file
 func loadFile(path string) (*Config, error) {
-	data, err := os.ReadFile(path)
+	data, err := os.ReadFile(path) // #nosec G304 - config file path is from user, which is expected
 	if err != nil {
 		return nil, err
 	}

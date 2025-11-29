@@ -4,6 +4,7 @@ package resolver
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"os/exec"
@@ -19,8 +20,8 @@ type Resolver interface {
 
 // VersionInfo is the response from the @latest endpoint of proxy.golang.org
 type VersionInfo struct {
-	Version string    `json:"Version"`
 	Time    time.Time `json:"Time"`
+	Version string    `json:"Version"`
 }
 
 // ProxyResolver resolves versions using proxy.golang.org
@@ -46,7 +47,7 @@ func NewProxyResolver(proxyURL string, timeout time.Duration) *ProxyResolver {
 func (r *ProxyResolver) LatestVersion(ctx context.Context, modulePath string) (string, error) {
 	url := fmt.Sprintf("%s/%s/@latest", r.ProxyURL, escapePath(modulePath))
 
-	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, nil)
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return "", fmt.Errorf("create request: %w", err)
 	}
@@ -55,7 +56,7 @@ func (r *ProxyResolver) LatestVersion(ctx context.Context, modulePath string) (s
 	if err != nil {
 		return "", fmt.Errorf("request to proxy: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }() // Explicitly ignore error in defer
 
 	if resp.StatusCode == http.StatusNotFound {
 		return "", fmt.Errorf("module not found: %s", modulePath)
@@ -108,20 +109,22 @@ func NewGoListResolver() *GoListResolver {
 
 // goListOutput is the output structure of go list -m -json
 type goListOutput struct {
-	Path    string `json:"Path"`
-	Version string `json:"Version"`
-	Error   *struct {
+	Error *struct {
 		Err string `json:"Err"`
 	} `json:"Error"`
+	Path    string `json:"Path"`
+	Version string `json:"Version"`
 }
 
 // LatestVersion retrieves the latest version of a module
 func (r *GoListResolver) LatestVersion(ctx context.Context, modulePath string) (string, error) {
+	// #nosec G204 - modulePath is from go install commands in user files, which is expected input
 	cmd := exec.CommandContext(ctx, r.GoCommand, "list", "-m", "-json", modulePath+"@latest")
 
 	out, err := cmd.Output()
 	if err != nil {
-		if exitErr, ok := err.(*exec.ExitError); ok {
+		exitErr := &exec.ExitError{}
+		if errors.As(err, &exitErr) {
 			return "", fmt.Errorf("go list failed: %s", string(exitErr.Stderr))
 		}
 		return "", fmt.Errorf("go list failed: %w", err)
@@ -172,7 +175,7 @@ func (r *FallbackResolver) LatestVersion(ctx context.Context, modulePath string)
 	}
 
 	// If both fail, return the Primary error
-	return "", fmt.Errorf("primary resolver: %w; fallback resolver: %v", err, fallbackErr)
+	return "", fmt.Errorf("primary resolver: %w; fallback resolver: %w", err, fallbackErr)
 }
 
 // CachedResolver caches version resolution results

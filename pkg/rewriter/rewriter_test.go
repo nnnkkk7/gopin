@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/google/go-cmp/cmp"
+
 	"github.com/nnnkkk7/gopin/pkg/detector"
 )
 
@@ -64,8 +65,8 @@ lint:
 			name:     "no changes needed",
 			content:  `go build ./...`,
 			versions: map[string]string{},
-			want:    `go build ./...`,
-			wantLen: 0,
+			want:     `go build ./...`,
+			wantLen:  0,
 		},
 	}
 

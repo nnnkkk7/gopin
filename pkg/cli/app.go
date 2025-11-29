@@ -76,6 +76,7 @@ func runCommand() *cli.Command {
 	}
 }
 
+//nolint:gocyclo // Complexity 16 is acceptable for main action function with sequential operations
 func runAction(ctx context.Context, c *cli.Command) error {
 	logger := setupLogger(c.Bool("verbose"))
 
@@ -146,7 +147,8 @@ func runAction(ctx context.Context, c *cli.Command) error {
 		}
 
 		if !dryRun {
-			if err := os.WriteFile(result.FilePath, []byte(result.Content), 0644); err != nil {
+			// #nosec G306 - 0644 is appropriate for source files
+			if err := os.WriteFile(result.FilePath, []byte(result.Content), 0o644); err != nil {
 				logger.Error("failed to write file", "file", result.FilePath, "error", err)
 				continue
 			}
@@ -184,7 +186,7 @@ func checkCommand() *cli.Command {
 	}
 }
 
-func checkAction(ctx context.Context, c *cli.Command) error {
+func checkAction(_ context.Context, c *cli.Command) error {
 	logger := setupLogger(c.Bool("verbose"))
 
 	cfg, err := config.Load(c.String("config"))
@@ -204,7 +206,7 @@ func checkAction(ctx context.Context, c *cli.Command) error {
 
 	var unpinnedCount int
 	for _, file := range files {
-		content, err := os.ReadFile(file)
+		content, err := os.ReadFile(file) // #nosec G304 - file path is from user config/args, which is expected
 		if err != nil {
 			logger.Error("failed to read file", "file", file, "error", err)
 			continue
@@ -246,7 +248,7 @@ func listCommand() *cli.Command {
 	}
 }
 
-func listAction(ctx context.Context, c *cli.Command) error {
+func listAction(_ context.Context, c *cli.Command) error {
 	logger := setupLogger(c.Bool("verbose"))
 
 	cfg, err := config.Load(c.String("config"))
@@ -267,7 +269,7 @@ func listAction(ctx context.Context, c *cli.Command) error {
 	unpinnedOnly := c.Bool("unpinned")
 
 	for _, file := range files {
-		content, err := os.ReadFile(file)
+		content, err := os.ReadFile(file) // #nosec G304 - file path is from user config/args, which is expected
 		if err != nil {
 			logger.Error("failed to read file", "file", file, "error", err)
 			continue
@@ -303,7 +305,7 @@ func initCommand() *cli.Command {
 	return &cli.Command{
 		Name:  "init",
 		Usage: "Create a config file",
-		Action: func(ctx context.Context, c *cli.Command) error {
+		Action: func(_ context.Context, c *cli.Command) error {
 			path := c.Args().First()
 			if path == "" {
 				path = ".gopin.yaml"
@@ -330,7 +332,8 @@ files:
 #   - name: "github.com/internal/.*"
 #     reason: "internal tools"
 `
-			if err := os.WriteFile(path, []byte(content), 0644); err != nil {
+			// #nosec G306 - 0644 is appropriate for config files
+			if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
 				return fmt.Errorf("write config file: %w", err)
 			}
 
@@ -394,7 +397,7 @@ func processFile(
 	res resolver.Resolver,
 	rew *rewriter.Rewriter,
 ) (*rewriter.Result, error) {
-	content, err := os.ReadFile(file)
+	content, err := os.ReadFile(file) // #nosec G304 - file path is from user config/args, which is expected
 	if err != nil {
 		return nil, fmt.Errorf("read file: %w", err)
 	}

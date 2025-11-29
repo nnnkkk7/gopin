@@ -193,8 +193,8 @@ func TestNeedsPin(t *testing.T) {
 		{"v1.0.0", true},  // Changed: now all versions should be updated
 		{"v1.61.0", true}, // Changed: now all versions should be updated
 		{"v0.0.0-20240101120000-abcdef123456", true}, // Changed: now all versions should be updated
-		{"master", true},  // Added: branch references should also be updated
-		{"main", true},    // Added: branch references should also be updated
+		{"master", true}, // Added: branch references should also be updated
+		{"main", true},   // Added: branch references should also be updated
 	}
 
 	for _, tt := range tests {
@@ -255,9 +255,9 @@ func TestExtractRootModule(t *testing.T) {
 func TestDetector_ShouldProcess(t *testing.T) {
 	tests := []struct {
 		name       string
+		modulePath string
 		includes   []string
 		excludes   []string
-		modulePath string
 		want       bool
 	}{
 		{

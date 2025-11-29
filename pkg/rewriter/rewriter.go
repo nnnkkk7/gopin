@@ -11,19 +11,19 @@ import (
 
 // Change represents a single rewrite change
 type Change struct {
-	Line       int    // Line number (1-indexed)
-	OldText    string // Original text
-	NewText    string // New text
-	ModulePath string // Module path
-	OldVersion string // Original version
-	NewVersion string // New version
+	OldText    string
+	NewText    string
+	ModulePath string
+	OldVersion string
+	NewVersion string
+	Line       int
 }
 
 // Result represents the rewriting result
 type Result struct {
-	FilePath string   // File path
-	Changes  []Change // List of changes
-	Content  string   // New file content
+	FilePath string
+	Content  string
+	Changes  []Change
 }
 
 // Options represents rewriter options

@@ -62,10 +62,10 @@ func TestDefault(t *testing.T) {
 
 func TestLoad(t *testing.T) {
 	tests := []struct {
+		want       *Config
 		name       string
 		configYAML string
 		fileName   string
-		want       *Config
 		wantErr    bool
 	}{
 		{
@@ -128,7 +128,8 @@ files:
 			configPath := filepath.Join(tmpDir, tt.fileName)
 
 			// Write config file
-			if err := os.WriteFile(configPath, []byte(tt.configYAML), 0644); err != nil {
+			// #nosec G306 - test file
+			if err := os.WriteFile(configPath, []byte(tt.configYAML), 0o644); err != nil {
 				t.Fatalf("Failed to write config file: %v", err)
 			}
 
@@ -185,7 +186,7 @@ func TestLoad_DefaultWhenNotFound(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Failed to get working directory: %v", err)
 	}
-	defer os.Chdir(oldWd)
+	defer func() { _ = os.Chdir(oldWd) }() // Explicitly ignore error in cleanup
 
 	if err := os.Chdir(tmpDir); err != nil {
 		t.Fatalf("Failed to change directory: %v", err)
@@ -206,8 +207,8 @@ func TestLoad_DefaultWhenNotFound(t *testing.T) {
 
 func TestValidate(t *testing.T) {
 	tests := []struct {
-		name    string
 		config  *Config
+		name    string
 		wantErr bool
 	}{
 		{
@@ -292,7 +293,8 @@ resolver:
 			tmpDir := t.TempDir()
 			configPath := filepath.Join(tmpDir, ".gopin.yaml")
 
-			if err := os.WriteFile(configPath, []byte(fullYAML), 0644); err != nil {
+			// #nosec G306 - test file
+			if err := os.WriteFile(configPath, []byte(fullYAML), 0o644); err != nil {
 				t.Fatalf("Failed to write config file: %v", err)
 			}
 

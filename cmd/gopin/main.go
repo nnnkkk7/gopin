@@ -18,6 +18,7 @@ func main() {
 	app := cli.NewApp()
 	if err := app.Run(ctx, os.Args); err != nil {
 		slog.Error("gopin failed", "error", err)
-		os.Exit(1)
+		cancel()   // Ensure cancel is called before exit
+		os.Exit(1) //nolint:gocritic // exitAfterDefer: cancel() is explicitly called before Exit
 	}
 }

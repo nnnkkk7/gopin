@@ -134,7 +134,7 @@ func (d *Detector) ShouldProcess(modulePath string) bool {
 }
 
 // NeedsPin determines if a version needs to be pinned/updated
-func NeedsPin(version string) bool {
+func NeedsPin(_ string) bool {
 	// All versions should be updated to latest
 	// This includes @latest, @v1.0.0, @master, or no version
 	return true
