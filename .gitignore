@@ -31,3 +31,6 @@ go.work.sum
 
 # GoReleaser build artifacts
 dist/
+
+# Unignore CLAUDE.md
+!CLAUDE.md
