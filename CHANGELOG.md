@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.2](https://github.com/nnnkkk7/gopin/compare/v1.0.1...v1.0.2) - 2025-11-29
+- fix: resolve GoReleaser dirty state by including CLAUDE.md in repository by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/11
+- chore: add CLAUDE.md by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/13
+
 ## [v1.0.1](https://github.com/nnnkkk7/gopin/compare/v1.0.0...v1.0.1) - 2025-11-29
 - chore: update release workflow to support manual triggers and improve tag handling by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/5
 - chore: remove CLAUDE.md from release artifacts by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/7
