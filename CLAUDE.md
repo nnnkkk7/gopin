@@ -61,23 +61,22 @@ The tool follows a clear three-stage pipeline:
 
 ### Key Design Patterns
 
-**Module Path Normalization**: The detector extracts root modules from subpaths (e.g., `github.com/golangci/golangci-lint/cmd/golangci-lint` → `github.com/golangci/golangci-lint`) in [detector.ExtractRootModule()](pkg/detector/detector.go:153-188). This is critical because the Go module proxy only recognizes root modules.
+**Module Path Normalization**: The detector extracts root modules from subpaths (e.g., `github.com/golangci/golangci-lint/cmd/golangci-lint` → `github.com/golangci/golangci-lint`) in [detector.ExtractRootModule()](pkg/detector/detector.go:147-178). This is critical because the Go module proxy only recognizes root modules.
 
-**Resolver Chain**: Resolvers are composed using decorators. The typical chain is: `CachedResolver` → `FallbackResolver` → `ProxyResolver` / `GoListResolver`. This pattern is constructed in [cli.createResolver()](pkg/cli/app.go:384-400).
+**Resolver Chain**: Resolvers are composed using decorators. The typical chain is: `CachedResolver` → `FallbackResolver` → `ProxyResolver` / `GoListResolver`. This pattern is constructed in [cli.createResolver()](pkg/cli/app.go:374-389).
 
 **Backward Processing**: The rewriter processes matches in reverse order (last line first, rightmost column first) in [rewriter.Rewrite()](pkg/rewriter/rewriter.go:51-118). This prevents offset shifts when modifying earlier parts of the file.
 
-**Update Mode**: The `--update` flag makes gopin also update already-pinned versions (not just `@latest`). This is controlled by [detector.NeedsUpdate()](pkg/detector/detector.go:146-151).
+**Version Pinning Behavior**: By default, gopin updates all `go install` commands to the latest version, regardless of whether they use `@latest` or are already pinned. This is controlled by [detector.NeedsPin()](pkg/detector/detector.go:137-141), which currently returns `true` for all versions.
 
 ## Configuration
 
 Default target files (if no `.gopin.yaml` exists):
-- `.github/workflows/*.yml`, `.github/workflows/*.yaml`
+- `.github/**/*.yml`, `.github/**/*.yaml`
 - `Makefile`, `makefile`, `GNUmakefile`
-- `scripts/*.sh`, `scripts/*.bash`
 - `*.mk`
 
-Configuration is loaded via [config.Load()](pkg/config/config.go:86-100) which searches standard paths:
+Configuration is loaded via [config.Load()](pkg/config/config.go:73-87) which searches standard paths:
 - `.gopin.yaml`
 - `.gopin.yml`
 - `.github/gopin.yaml`
@@ -85,10 +84,14 @@ Configuration is loaded via [config.Load()](pkg/config/config.go:86-100) which s
 
 ## Version String
 
-The version is injected at build time into `cli.Version` variable ([pkg/cli/app.go:20](pkg/cli/app.go:20)). Use `-ldflags` to set:
-```bash
-go build -ldflags "-X github.com/nnnkkk7/gopin/pkg/cli.Version=v1.0.0"
-```
+The project uses two version tracking mechanisms:
+
+1. **Runtime version**: The `cli.Version` variable ([pkg/cli/app.go:20](pkg/cli/app.go:20)) is injected at build time using ldflags:
+   ```bash
+   go build -ldflags "-X github.com/nnnkkk7/gopin/pkg/cli.Version=v1.0.0"
+   ```
+
+2. **Source version**: The [version.go](version.go) file at the repository root contains a version constant used by tagpr for automated release management. This file is automatically updated by tagpr when creating release pull requests.
 
 ## Testing Approach
 
