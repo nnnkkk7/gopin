@@ -8,12 +8,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/urfave/cli/v3"
-
 	"github.com/nnnkkk7/gopin/pkg/config"
 	"github.com/nnnkkk7/gopin/pkg/detector"
 	"github.com/nnnkkk7/gopin/pkg/resolver"
 	"github.com/nnnkkk7/gopin/pkg/rewriter"
+	"github.com/urfave/cli/v3"
 )
 
 // Version is the version string embedded at build time
