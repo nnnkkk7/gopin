@@ -63,13 +63,15 @@ jobs:
             # Find tag pointing to the HEAD commit (the commit that tagpr just tagged)
             TAG=$(git tag --points-at HEAD | grep '^v' | sort -V | tail -n1)
             if [ -z "$TAG" ]; then
-              echo "Error: No tag found on commit ${{ github.event.workflow_run.head_sha }}"
-              echo "This workflow should only run after tagpr creates a tag"
-              exit 1
+              echo "No tag found on commit ${{ github.event.workflow_run.head_sha }}"
+              echo "Skipping release - tagpr did not create a tag (this was a regular PR merge)"
+              echo "skip=true" >> $GITHUB_OUTPUT
+              exit 0
             fi
           fi
 
           echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "skip=false" >> $GITHUB_OUTPUT
           echo "Release tag: $TAG"
 
           # Verify tag exists
@@ -79,6 +81,7 @@ jobs:
           fi
 
       - name: Checkout tag
+        if: steps.get-tag.outputs.skip != 'true'
         uses: actions/checkout@v4
         with:
           ref: ${{ steps.get-tag.outputs.tag }}
@@ -86,6 +89,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Go
+        if: steps.get-tag.outputs.skip != 'true'
         uses: actions/setup-go@v5
         with:
           go-version: stable
@@ -93,6 +97,7 @@ jobs:
           # go-version-file: 'go.mod'
 
       - name: Run GoReleaser
+        if: steps.get-tag.outputs.skip != 'true'
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
