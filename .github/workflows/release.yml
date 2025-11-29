@@ -1,9 +1,19 @@
 name: Release
 
 on:
-  push:
-    tags:
-      - 'v*'
+  # Trigger when tagpr workflow completes successfully
+  workflow_run:
+    workflows: ["tagpr"]
+    types: [completed]
+    branches: [main]
+
+  # Manual trigger for existing tags or re-runs
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v1.0.0)'
+        required: false
+        type: string
 
 permissions:
   contents: write
@@ -14,11 +24,64 @@ permissions:
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
+    # Only run if:
+    # 1. Triggered by successful tagpr workflow run, OR
+    # 2. Manually dispatched
+    if: |
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.event == 'push') ||
+      github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
+          # Fetch complete history and all tags
+          fetch-depth: 0
+          # For workflow_run, checkout the commit that triggered tagpr
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+
+      - name: Get tag name
+        id: get-tag
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # Manual trigger
+            if [ -n "${{ inputs.tag }}" ]; then
+              # Use specified tag
+              TAG="${{ inputs.tag }}"
+            else
+              # No tag specified - use the latest tag
+              TAG=$(git tag -l 'v*' --sort=-v:refname | head -n1)
+              if [ -z "$TAG" ]; then
+                echo "Error: No tag specified and no tags found in repository"
+                exit 1
+              fi
+              echo "No tag specified, using latest tag: $TAG"
+            fi
+          else
+            # Auto trigger from workflow_run
+            # Find tag pointing to the HEAD commit (the commit that tagpr just tagged)
+            TAG=$(git tag --points-at HEAD | grep '^v' | sort -V | tail -n1)
+            if [ -z "$TAG" ]; then
+              echo "Error: No tag found on commit ${{ github.event.workflow_run.head_sha }}"
+              echo "This workflow should only run after tagpr creates a tag"
+              exit 1
+            fi
+          fi
+
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "Release tag: $TAG"
+
+          # Verify tag exists
+          if ! git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Error: Tag $TAG does not exist"
+            exit 1
+          fi
+
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.get-tag.outputs.tag }}
           # Fetch complete history (required for CHANGELOG generation)
           fetch-depth: 0
 
