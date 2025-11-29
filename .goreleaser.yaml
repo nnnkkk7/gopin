@@ -80,7 +80,6 @@ archives:
     files:
       - README.md
       - LICENSE
-      - CLAUDE.md
 
 # Generate checksum file
 checksum:
