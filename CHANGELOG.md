@@ -2,6 +2,10 @@
 
 ## [v1.0.3](https://github.com/nnnkkk7/gopin/compare/v1.0.2...v1.0.3) - 2025-11-29
 - ci: add lint and test workflow by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/14
+- docs: update how to install by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/17
+
+## [v1.0.3](https://github.com/nnnkkk7/gopin/compare/v1.0.2...v1.0.3) - 2025-11-29
+- ci: add lint and test workflow by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/14
 
 ## [v1.0.2](https://github.com/nnnkkk7/gopin/compare/v1.0.1...v1.0.2) - 2025-11-29
 - fix: resolve GoReleaser dirty state by including CLAUDE.md in repository by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/11
