@@ -19,11 +19,70 @@ gopin solves these problems by automatically converting `@latest` to specific se
 
 ## Installation
 
+### Homebrew (macOS/Linux)
+
+```bash
+brew install nnnkkk7/tap/gopin
+```
+
+### Binary Download
+
+Download the pre-built binary for your platform from [Releases](https://github.com/nnnkkk7/gopin/releases):
+
+```bash
+# macOS (Apple Silicon)
+curl -L https://github.com/nnnkkk7/gopin/releases/latest/download/gopin_Darwin_arm64.tar.gz | tar xz
+sudo mv gopin /usr/local/bin/
+
+# macOS (Intel)
+curl -L https://github.com/nnnkkk7/gopin/releases/latest/download/gopin_Darwin_x86_64.tar.gz | tar xz
+sudo mv gopin /usr/local/bin/
+
+# Linux (amd64)
+curl -L https://github.com/nnnkkk7/gopin/releases/latest/download/gopin_Linux_x86_64.tar.gz | tar xz
+sudo mv gopin /usr/local/bin/
+
+# Linux (arm64)
+curl -L https://github.com/nnnkkk7/gopin/releases/latest/download/gopin_Linux_arm64.tar.gz | tar xz
+sudo mv gopin /usr/local/bin/
+```
+
+### Go Install
+
 ```bash
 go install github.com/nnnkkk7/gopin/cmd/gopin@latest
 ```
 
-Or download from [Releases](https://github.com/nnnkkk7/gopin/releases).
+### Verify Installation
+
+```bash
+gopin version
+```
+
+### macOS Security Note
+
+On macOS, you may see a security warning: **"gopin cannot be opened because Apple cannot check it for malicious software"**
+
+This happens because the binary is not code-signed. To resolve this:
+
+#### Option 1: Remove quarantine attribute (Recommended)
+
+```bash
+xattr -d com.apple.quarantine $(which gopin)
+```
+
+#### Option 2: Allow in System Settings
+
+1. Try to run `gopin` and the warning will appear
+2. Open **System Settings** → **Privacy & Security**
+3. Scroll down and click **"Open Anyway"** next to the gopin warning
+4. Confirm by clicking **"Open"**
+
+#### Option 3: Use Go Install (No security warnings)
+
+```bash
+go install github.com/nnnkkk7/gopin/cmd/gopin@latest
+```
 
 ## Quick Start
 
