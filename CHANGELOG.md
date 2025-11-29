@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.4](https://github.com/nnnkkk7/gopin/compare/v1.0.3...v1.0.4) - 2025-11-29
+- ci: fix formatter by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/18
+- docs: update CLAUDE.md by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/20
+
 ## [v1.0.3](https://github.com/nnnkkk7/gopin/compare/v1.0.2...v1.0.3) - 2025-11-29
 - ci: add lint and test workflow by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/14
 - docs: update how to install by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/17
