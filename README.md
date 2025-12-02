@@ -19,6 +19,18 @@ gopin solves these problems by automatically converting `@latest` to specific se
 
 ## Installation
 
+### Go Install
+
+```bash
+go install github.com/nnnkkk7/gopin/cmd/gopin@latest
+```
+
+### Verify Installation
+
+```bash
+gopin version
+```
+
 ### Homebrew (macOS/Linux)
 
 ```bash
@@ -45,18 +57,6 @@ sudo mv gopin /usr/local/bin/
 # Linux (arm64)
 curl -L https://github.com/nnnkkk7/gopin/releases/latest/download/gopin_Linux_arm64.tar.gz | tar xz
 sudo mv gopin /usr/local/bin/
-```
-
-### Go Install
-
-```bash
-go install github.com/nnnkkk7/gopin/cmd/gopin@latest
-```
-
-### Verify Installation
-
-```bash
-gopin version
 ```
 
 ### macOS Security Note
