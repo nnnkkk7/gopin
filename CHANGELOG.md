@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.0.5](https://github.com/nnnkkk7/gopin/compare/v1.0.4...v1.0.5) - 2025-12-02
+- docs: fix command order by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/21
+- ci: add depandabot by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/23
+- chore(deps): bump actions/checkout from 4.3.1 to 6.0.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/24
+- chore(deps): bump actions/setup-go from 5.5.0 to 6.1.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/27
+- chore(deps): bump Songmu/tagpr from 1.8.4 to 1.9.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/25
+- chore(deps): bump github.com/goccy/go-yaml from 1.18.0 to 1.19.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/26
+- docs: add command by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/28
+
 ## [v1.0.4](https://github.com/nnnkkk7/gopin/compare/v1.0.3...v1.0.4) - 2025-11-29
 - ci: fix formatter by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/18
 - docs: update CLAUDE.md by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/20
