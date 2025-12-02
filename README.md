@@ -15,7 +15,11 @@ Using `@latest` in `go install` commands is convenient but problematic:
 - **CI/CD instability**: Team members might use different tool versions
 - **Debugging difficulty**: Hard to reproduce past builds
 
-gopin solves these problems by automatically converting `@latest` to specific semantic versions.
+gopin solves these problems by automatically updating all `go install` commands to the latest specific semantic versions:
+
+- **Pin `@latest`**: Convert `@latest` to specific versions (e.g., `@v2.6.2`)
+- **Update outdated versions**: Update already-pinned versions to the latest (e.g., `@v1.0.0` → `@v2.6.2`)
+- **Add missing versions**: Add version specifiers to commands without them
 
 ## Installation
 
@@ -201,48 +205,46 @@ If no configuration file is found, gopin uses these default patterns:
 
 ## Examples
 
-### Before
+### Example 1: Pin `@latest` to specific version
 
-**Makefile:**
+**Before:**
+
 ```makefile
-.PHONY: lint
-lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-	golangci-lint run
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 ```
 
-**GitHub Actions workflow:**
-```yaml
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-      - run: golangci-lint run
-```
+**After:**
 
-### After
-
-**Makefile:**
 ```makefile
-.PHONY: lint
-lint:
-	go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
-	golangci-lint run
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.6.2
 ```
 
-**GitHub Actions workflow:**
-```yaml
-jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
-      - run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.64.8
-      - run: golangci-lint run
+### Example 2: Update outdated pinned version
+
+**Before:**
+
+```makefile
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.0.0
+```
+
+**After:**
+
+```makefile
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.6.2
+```
+
+### Example 3: Add version to unversioned command
+
+**Before:**
+
+```makefile
+go install github.com/air-verse/air
+```
+
+**After:**
+
+```makefile
+go install github.com/air-verse/air@v1.61.7
 ```
 
 ## CI Integration
@@ -304,7 +306,7 @@ jobs:
 1. **Scan files**: Find files matching the configured patterns
 2. **Detect patterns**: Find `go install <module>@<version>` using regex
 3. **Resolve versions**: Query `proxy.golang.org` (or `go list`) for latest version
-4. **Rewrite files**: Replace `@latest` with specific version (e.g., `@v1.61.0`)
+4. **Rewrite files**: Update all versions to the latest (e.g., `@latest` → `@v2.6.2`, `@v1.0.0` → `@v2.6.2`)
 
 ### Version Resolution
 
