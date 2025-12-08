@@ -1,10 +1,12 @@
+<p align="center">
+  <img src="assets/gopin.png" alt="gopin" />
+</p>
+
 # gopin
 
 [![CI](https://github.com/nnnkkk7/gopin/actions/workflows/ci.yml/badge.svg)](https://github.com/nnnkkk7/gopin/actions/workflows/ci.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/nnnkkk7/gopin)](https://goreportcard.com/report/github.com/nnnkkk7/gopin)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-![gopin](assets/gopin.png)
 
 **gopin** is a CLI tool to pin versions of `go install` commands in your files for reproducible builds and enhanced security.
 
