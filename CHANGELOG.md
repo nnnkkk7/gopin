@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.0.6](https://github.com/nnnkkk7/gopin/compare/v1.0.5...v1.0.6) - 2025-12-26
+- docs: add image by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/29
+- docs: adjust image position by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/31
+- docs: remove logo image from README by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/32
+- chore(deps): bump actions/checkout from 6.0.0 to 6.0.1 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/33
+- chore(deps): bump github.com/goccy/go-yaml from 1.19.0 to 1.19.1 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/35
+- chore(deps): bump Songmu/tagpr from 1.9.0 to 1.10.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/34
+
 ## [v1.0.5](https://github.com/nnnkkk7/gopin/compare/v1.0.4...v1.0.5) - 2025-12-02
 - docs: fix command order by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/21
 - ci: add depandabot by @nnnkkk7 in https://github.com/nnnkkk7/gopin/pull/23
