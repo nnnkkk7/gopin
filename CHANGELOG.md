@@ -1,5 +1,19 @@
 # Changelog
 
+## [v1.0.8](https://github.com/nnnkkk7/gopin/compare/v1.0.7...v1.0.8) - 2026-09-06
+
+- chore(deps): bump Songmu/tagpr from 1.11.1 to 1.15.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/44
+- chore(deps): bump actions/checkout from 6.0.1 to 6.0.2 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/42
+- chore(deps): bump github.com/urfave/cli/v3 from 3.6.2 to 3.8.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/52
+- chore(deps): bump actions/setup-go from 6.2.0 to 6.4.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/51
+- chore(deps): bump Songmu/tagpr from 1.15.0 to 1.19.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/58
+- chore(deps): bump goreleaser/goreleaser-action from 6.4.0 to 7.2.1 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/57
+- chore(deps): bump Songmu/tagpr from 1.19.0 to 1.20.2 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/72
+- chore(deps): bump github.com/urfave/cli/v3 from 3.8.0 to 3.11.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/71
+- chore(deps): bump actions/checkout from 6.0.2 to 7.0.1 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/68
+- chore(deps): bump goreleaser/goreleaser-action from 7.2.1 to 7.2.3 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/66
+- chore(deps): bump actions/setup-go from 6.4.0 to 7.0.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/70
+
 ## [v1.0.7](https://github.com/nnnkkk7/gopin/compare/v1.0.6...v1.0.7) - 2026-01-19
 - chore(deps): bump actions/setup-go from 6.1.0 to 6.2.0 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/39
 - chore(deps): bump Songmu/tagpr from 1.10.0 to 1.11.1 by @dependabot[bot] in https://github.com/nnnkkk7/gopin/pull/38
